@@ -42,6 +42,7 @@ export class Mouse {
     get y() {
         return this.position.y;
     }
+
     isMouseDown(): boolean {
         return this.isDown;
     }

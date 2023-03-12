@@ -12,7 +12,6 @@ export const GRID_SIZE = 100;
 export class Game {
     mouse: Mouse;
     puzzleGrid: PuzzleGrid;
-    // pieces: PuzzlePiece[] = new Array(WIDTH * HEIGHT);
     pieceCollection: PuzzlePieceCollection;
 
     holdingPiece: PuzzlePiece | null;
@@ -34,7 +33,6 @@ export class Game {
         this.resize();
         this.loop();
     }
-    o;
 
     loop() {
         const canvas = Constants.canvas;
