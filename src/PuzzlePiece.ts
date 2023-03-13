@@ -25,7 +25,15 @@ export class PuzzlePiece {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
+        ctx.save();
+        if (!this.isLockedInPlace) {
+            ctx.beginPath();
+            ctx.roundRect(this.position.x - this.sprite.halfWidth, this.position.y - this.sprite.halfHeight, this.sprite.width, this.sprite.height, 10);
+            ctx.clip();
+        }
+
         ctx.drawImage(this.sprite.image, this.position.x - this.sprite.halfWidth, this.position.y - this.sprite.halfHeight, this.sprite.width, this.sprite.height);
+        ctx.restore();
 
         // show piece position
         // ctx.save();
