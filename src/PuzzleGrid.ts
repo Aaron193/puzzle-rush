@@ -36,30 +36,39 @@ export class PuzzleGrid {
     draw(ctx: CanvasRenderingContext2D) {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
-        ctx.strokeStyle = 'white';
+
+        // fill background
+        ctx.save();
+        ctx.fillStyle = Constants.Colors.gridFill;
+        ctx.beginPath();
+        ctx.strokeStyle = Constants.Colors.gridBoarder;
+        ctx.lineWidth = 15;
+        ctx.roundRect(0, 0, this.width * GRID_SIZE, this.height * GRID_SIZE, 15);
+        ctx.stroke();
+        ctx.fill();
+        ctx.restore();
+
         ctx.lineWidth = 2;
         const step = GRID_SIZE;
 
         const width = this.width;
         const height = this.height;
-        // horizontals
+        ctx.strokeStyle = Constants.Colors.cellBoarder;
+        // horizontal
         for (let i = 0; i < height - 1; i++) {
-            ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0, 0 + i * step + step);
-            ctx.lineTo(width * step, 0 + i * step + step);
+            ctx.moveTo(0, i * step + step);
+            ctx.lineTo(width * step, i * step + step);
             ctx.stroke();
-            ctx.restore();
         }
-        // vertical's
+        // vertical
         for (let i = 0; i < width - 1; i++) {
-            ctx.save();
             ctx.beginPath();
-            ctx.moveTo(0 + i * step + step, 0);
-            ctx.lineTo(0 + i * step + step, height * step);
+            ctx.moveTo(i * step + step, 0);
+            ctx.lineTo(i * step + step, height * step);
             ctx.stroke();
-            ctx.restore();
         }
+
         ctx.restore();
     }
 }

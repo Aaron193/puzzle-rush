@@ -38,7 +38,7 @@ export class Game {
         const canvas = Constants.canvas;
         const ctx = Constants.ctx;
 
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = '#0C2D48';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         const heldPiece = this.holdingPiece;
@@ -72,7 +72,12 @@ export class Game {
             const position = piece.position;
             const sprite = piece.sprite;
 
-            if (x > position.x - sprite.halfWidth && x < position.x + sprite.halfWidth && y < position.y + sprite.halfHeight && y > position.y - sprite.halfHeight) {
+            if (
+                x > position.x - sprite.halfWidth &&
+                x < position.x + sprite.halfWidth &&
+                y < position.y + sprite.halfHeight &&
+                y > position.y - sprite.halfHeight
+            ) {
                 this.holdingPiece = piece;
                 pieces.splice(i, 1);
                 pieces.push(piece);
