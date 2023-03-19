@@ -1,4 +1,4 @@
-import { Game, GRID_SIZE } from './Game';
+import { Game, GRID_SIZE, HEIGHT, WIDTH } from './Game';
 import { PuzzlePiece } from './PuzzlePiece';
 
 export class PuzzlePieceCollection {
@@ -23,14 +23,15 @@ export class PuzzlePieceCollection {
     }
 
     checkForSolvedPiece(piece: PuzzlePiece) {
-        const position = piece.position;
+        const { x, y } = piece.position;
 
         const grid = this.game.puzzleGrid;
 
         const target = {
-            x: Math.ceil(position.x / GRID_SIZE) * GRID_SIZE,
-            y: Math.ceil(position.y / GRID_SIZE) * GRID_SIZE,
+            x: Math.ceil((x - grid.position.x) / GRID_SIZE) * GRID_SIZE,
+            y: Math.ceil((y - grid.position.y) / GRID_SIZE) * GRID_SIZE,
         };
+        console.log(target);
 
         const gridPiece = grid.getTile(target.x, target.y);
 
@@ -66,8 +67,10 @@ export class PuzzlePieceCollection {
         const grid = this.game.puzzleGrid;
         grid.setTile(gridX * GRID_SIZE, gridY * GRID_SIZE, piece);
 
-        piece.position.x = gridX * GRID_SIZE - GRID_SIZE / 2;
-        piece.position.y = gridY * GRID_SIZE - GRID_SIZE / 2;
+        piece.position.x = grid.position.x + gridX * GRID_SIZE - GRID_SIZE / 2;
+        piece.position.y = grid.position.y + gridY * GRID_SIZE - GRID_SIZE / 2;
+        // piece.position.x = gridX * GRID_SIZE - GRID_SIZE / 2;
+        // piece.position.y = gridY * GRID_SIZE - GRID_SIZE / 2;
         piece.isLockedInPlace = true;
     }
 
@@ -75,6 +78,11 @@ export class PuzzlePieceCollection {
         const { x, y } = piece.position;
         const grid = this.game.puzzleGrid;
 
-        return x > 0 && x < grid.width * GRID_SIZE && y > 0 && y < grid.height * GRID_SIZE;
+        return (
+            x > grid.position.x &&
+            x < grid.position.x + grid.width * GRID_SIZE &&
+            y > grid.position.y &&
+            y < grid.position.y + grid.height * GRID_SIZE
+        );
     }
 }
