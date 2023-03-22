@@ -1,4 +1,4 @@
-import { Game, GRID_SIZE, HEIGHT, WIDTH } from './Game';
+import { Game, GRID_SIZE } from './Game';
 import { PuzzlePiece } from './PuzzlePiece';
 
 export class PuzzlePieceCollection {

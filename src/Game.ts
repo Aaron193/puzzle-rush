@@ -22,7 +22,7 @@ export class Game {
 
         this.mouse = new Mouse();
         this.puzzleGrid = new PuzzleGrid(WIDTH, HEIGHT);
-        this.pieceCollection = new PuzzlePieceCollection(this, WIDTH, HEIGHT, 'images');
+        this.pieceCollection = new PuzzlePieceCollection(this, WIDTH, HEIGHT, '/images');
 
         window.addEventListener('resize', () => this.resize());
 
