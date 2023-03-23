@@ -17,6 +17,8 @@ export class Game {
     holdingPiece: PuzzlePiece | null;
     holdOffset: Vector2 = { x: 0, y: 0 };
 
+    private gameIsActive: boolean = false;
+
     constructor() {
         this.resize();
 
@@ -32,9 +34,28 @@ export class Game {
 
         this.resize();
         this.loop();
+        this.enterGame();
+    }
+
+    enterGame() {
+        // todo: make this constant
+        const startPage = document.querySelector('.start-page') as HTMLDivElement;
+        startPage.style.display = 'none';
+        this.gameIsActive = true;
+        console.log('here');
+    }
+
+    exitGame() {
+        const startPage = document.querySelector('.start-page') as HTMLDivElement;
+        startPage.style.display = 'flex';
+        this.gameIsActive = false;
     }
 
     loop() {
+        requestAnimationFrame(() => this.loop());
+
+        if (!this.gameIsActive) return;
+
         const canvas = Constants.canvas;
         const ctx = Constants.ctx;
 
@@ -49,8 +70,6 @@ export class Game {
 
         this.puzzleGrid.draw(ctx);
         this.pieceCollection.pieces.forEach(piece => piece.draw(ctx));
-
-        requestAnimationFrame(() => this.loop());
     }
 
     resize() {
