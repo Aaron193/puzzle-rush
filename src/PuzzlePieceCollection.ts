@@ -18,8 +18,8 @@ export class PuzzlePieceCollection {
             this.pieces[i] = new PuzzlePiece(path, i + 1);
         }
 
-        const lastPiece = this.pieces[this.pieces.length - 1];
-        this.lockPiece(lastPiece, width, height);
+        const centerPiece = this.pieces[Math.ceil((this.pieces.length - 1) / 2)];
+        this.lockPiece(centerPiece, Math.ceil(width / 2), Math.ceil(height / 2));
     }
 
     checkForSolvedPiece(piece: PuzzlePiece) {
@@ -31,7 +31,6 @@ export class PuzzlePieceCollection {
             x: Math.ceil((x - grid.position.x) / GRID_SIZE) * GRID_SIZE,
             y: Math.ceil((y - grid.position.y) / GRID_SIZE) * GRID_SIZE,
         };
-        console.log(target);
 
         const gridPiece = grid.getTile(target.x, target.y);
 

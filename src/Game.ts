@@ -17,7 +17,7 @@ export class Game {
     holdingPiece: PuzzlePiece | null;
     holdOffset: Vector2 = { x: 0, y: 0 };
 
-    private gameIsActive: boolean = false;
+    private gameIsActive: boolean = true;
 
     constructor() {
         this.resize();
@@ -34,7 +34,7 @@ export class Game {
 
         this.resize();
         this.loop();
-        this.enterGame();
+        // this.exitGame();
     }
 
     enterGame() {
