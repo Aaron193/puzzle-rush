@@ -42,7 +42,6 @@ export class Game {
         const startPage = document.querySelector('.start-page') as HTMLDivElement;
         startPage.style.display = 'none';
         this.gameIsActive = true;
-        console.log('here');
     }
 
     exitGame() {
