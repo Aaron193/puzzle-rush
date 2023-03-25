@@ -8,6 +8,9 @@ import { Vector2 } from './types/Vector';
 export const WIDTH = 5;
 export const HEIGHT = 5;
 export const GRID_SIZE = 100;
+// export const WIDTH = 9;
+// export const HEIGHT = 5;
+// export const GRID_SIZE = 100;
 
 export class Game {
     mouse: Mouse;

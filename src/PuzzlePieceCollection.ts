@@ -18,8 +18,10 @@ export class PuzzlePieceCollection {
             this.pieces[i] = new PuzzlePiece(path, i + 1);
         }
 
-        const centerPiece = this.pieces[Math.ceil((this.pieces.length - 1) / 2)];
-        this.lockPiece(centerPiece, Math.ceil(width / 2), Math.ceil(height / 2));
+        // const centerPiece = this.pieces[Math.ceil((this.pieces.length - 1) / 2)];
+        // this.lockPiece(centerPiece, Math.ceil(width / 2), Math.ceil(height / 2));
+        const firstPiece = this.pieces[0];
+        this.lockPiece(firstPiece, 1, 1);
     }
 
     checkForSolvedPiece(piece: PuzzlePiece) {
