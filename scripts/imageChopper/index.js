@@ -6,7 +6,7 @@ const inputFile = './scripts/imageChopper/input/image.jpg';
 const outputFolder = './scripts/imageChopper/output/';
 // const rows = 6;
 // const cols = 6;
-const size = 200;
+const size = 150;
 
 // Create the output folder if it doesn't exist
 if (!existsSync(outputFolder)) {

@@ -1,34 +1,37 @@
 import { Constants } from './Constants';
-import { GRID_SIZE } from './Game';
 import { PuzzlePiece } from './PuzzlePiece';
-import { Vector2 } from './types/Vector';
+import { ILevel, Vector2 } from './types/Vector';
 
 export class PuzzleGrid {
     width: number;
     height: number;
+    gridSize: number;
     position: Vector2;
     private grid: PuzzlePiece[];
 
-    constructor(width: number, height: number) {
+    constructor(level: ILevel) {
+        const { width, height, gridSize } = level;
+
         this.width = width;
         this.height = height;
+        this.gridSize = gridSize;
         this.grid = new Array(width * height);
         this.position = {
-            x: Constants.canvas.width * 0.5 - width * GRID_SIZE * 0.5,
-            y: Constants.canvas.height * 0.5 - height * GRID_SIZE * 0.5,
+            x: Constants.canvas.width * 0.5 - width * this.gridSize * 0.5,
+            y: Constants.canvas.height * 0.5 - height * this.gridSize * 0.5,
         };
     }
 
     setTile(x: number, y: number, piece: PuzzlePiece): void {
-        x = Math.floor(x / GRID_SIZE);
-        y = Math.floor(y / GRID_SIZE);
+        x = Math.floor(x / this.gridSize);
+        y = Math.floor(y / this.gridSize);
         const index = x + y * this.width;
         this.grid[index] = piece;
     }
 
     getTile(x: number, y: number): PuzzlePiece {
-        x = Math.floor(x / GRID_SIZE);
-        y = Math.floor(y / GRID_SIZE);
+        x = Math.floor(x / this.gridSize);
+        y = Math.floor(y / this.gridSize);
         const index = x + y * this.width;
         return this.grid[index];
     }
@@ -43,13 +46,13 @@ export class PuzzleGrid {
         ctx.beginPath();
         ctx.strokeStyle = Constants.Colors.gridBoarder;
         ctx.lineWidth = 15;
-        ctx.roundRect(0, 0, this.width * GRID_SIZE, this.height * GRID_SIZE, 15);
+        ctx.roundRect(0, 0, this.width * this.gridSize, this.height * this.gridSize, 15);
         ctx.stroke();
         ctx.fill();
         ctx.restore();
 
         ctx.lineWidth = 2;
-        const step = GRID_SIZE;
+        const step = this.gridSize;
 
         const width = this.width;
         const height = this.height;

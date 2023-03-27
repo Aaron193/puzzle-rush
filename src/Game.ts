@@ -1,16 +1,10 @@
 import { Constants } from './Constants';
+import { Levels, LEVEL_TYPES } from './Levels';
 import { Mouse } from './Mouse';
 import { PuzzleGrid } from './PuzzleGrid';
 import { PuzzlePiece } from './PuzzlePiece';
 import { PuzzlePieceCollection } from './PuzzlePieceCollection';
-import { Vector2 } from './types/Vector';
-
-export const WIDTH = 5;
-export const HEIGHT = 5;
-export const GRID_SIZE = 100;
-// export const WIDTH = 9;
-// export const HEIGHT = 5;
-// export const GRID_SIZE = 100;
+import { ILevel, Vector2 } from './types/Vector';
 
 export class Game {
     mouse: Mouse;
@@ -26,8 +20,10 @@ export class Game {
         this.resize();
 
         this.mouse = new Mouse();
-        this.puzzleGrid = new PuzzleGrid(WIDTH, HEIGHT);
-        this.pieceCollection = new PuzzlePieceCollection(this, WIDTH, HEIGHT, '/images');
+
+        const level = Levels[LEVEL_TYPES.LANDSCAPE];
+        this.puzzleGrid = new PuzzleGrid(level);
+        this.pieceCollection = new PuzzlePieceCollection(this, level);
 
         window.addEventListener('resize', () => this.resize());
 
@@ -35,19 +31,23 @@ export class Game {
         this.mouse.onmouseup = () => this.mouseup();
         this.mouse.onmousemove = () => this.mousemove();
 
-        this.resize();
         this.loop();
         // this.exitGame();
     }
 
-    enterGame() {
+    switchLevel(level: ILevel) {
+        this.puzzleGrid = new PuzzleGrid(level);
+        this.pieceCollection = new PuzzlePieceCollection(this, level);
+    }
+
+    exitHomepage() {
         // todo: make this constant
         const startPage = document.querySelector('.start-page') as HTMLDivElement;
         startPage.style.display = 'none';
         this.gameIsActive = true;
     }
 
-    exitGame() {
+    enterHomepage() {
         const startPage = document.querySelector('.start-page') as HTMLDivElement;
         startPage.style.display = 'flex';
         this.gameIsActive = false;

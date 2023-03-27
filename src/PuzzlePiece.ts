@@ -1,27 +1,26 @@
 import { Constants } from './Constants';
-import { GRID_SIZE, HEIGHT, WIDTH } from './Game';
 import { Sprite } from './Sprite';
-import { Vector2 } from './types/Vector';
+import { ILevel, Vector2 } from './types/Vector';
 
 function randomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function getRandomPiecePosition() {
-    const width = Constants.canvas.width;
-    const gridX = width * 0.5 - WIDTH * GRID_SIZE * 0.5;
+function getRandomPiecePosition({ width, height, gridSize }: ILevel) {
+    const canvasWidth = Constants.canvas.width;
+    const gridX = canvasWidth * 0.5 - width * gridSize * 0.5;
 
-    const height = Constants.canvas.height;
-    const gridY = height * 0.5 - HEIGHT * GRID_SIZE * 0.5;
+    const canvasHeight = Constants.canvas.height;
+    const gridY = canvasHeight * 0.5 - height * gridSize * 0.5;
 
     let x, y;
 
     // no piece can be this close to the grid
-    let padding = GRID_SIZE;
+    let padding = gridSize;
     do {
-        x = randomNumber(padding, width - padding);
-        y = randomNumber(padding, height - padding);
-    } while (x + padding > gridX && x - padding < gridX + WIDTH * GRID_SIZE && y + padding > gridY && y - padding < gridY + HEIGHT * GRID_SIZE);
+        x = randomNumber(padding, canvasWidth - padding);
+        y = randomNumber(padding, canvasHeight - padding);
+    } while (x + padding > gridX && x - padding < gridX + width * gridSize && y + padding > gridY && y - padding < gridY + height * gridSize);
 
     return { x, y };
 }
@@ -31,10 +30,10 @@ export class PuzzlePiece {
     pieceNumber: number;
     isLockedInPlace: boolean = false;
     sprite: Sprite;
-    constructor(path: string, pieceNumber: number) {
+    constructor(path: string, level: ILevel, pieceNumber: number) {
         const spritePath = `${path}/${pieceNumber}.jpg`;
         this.sprite = new Sprite(spritePath, 0.5);
-        this.position = getRandomPiecePosition();
+        this.position = getRandomPiecePosition(level);
         this.pieceNumber = pieceNumber;
     }
 
