@@ -7,5 +7,6 @@ export interface ILevel {
     width: number;
     height: number;
     gridSize: number;
+    time: number;
     path: string;
 }

@@ -1,5 +1,5 @@
 import { Game } from './Game';
-import { PuzzlePiece } from './PuzzlePiece';
+import { getRandomPiecePosition, PuzzlePiece } from './PuzzlePiece';
 import { ILevel } from './types/Vector';
 
 export class PuzzlePieceCollection {
@@ -43,6 +43,16 @@ export class PuzzlePieceCollection {
         // the grid slot must be an unoccupied slot
         if (gridPiece != undefined) return;
 
+        // because we start at 1.jpg
+        // const pieceNum = piece.pieceNumber - 1;
+        // const p = grid.getTileAtIndex(pieceNum);
+        // console.log(p);
+        // const pieceX = (pieceNum % this.width) * this.gridSize;
+        // const pieceY = Math.floor(pieceNum / this.width) * this.gridSize;
+
+        // console.log(target);
+        // console.log(pieceX, pieceY);
+
         let solvedPiece = false;
 
         const north = grid.getTile(target.x, target.y - this.gridSize);
@@ -80,6 +90,11 @@ export class PuzzlePieceCollection {
             if (isPuzzleSolved) {
                 console.log('puzzle was solved');
             }
+        } else {
+            const level = piece.level;
+            const { x, y } = getRandomPiecePosition(level);
+            piece.position.x = x;
+            piece.position.y = y;
         }
     }
 
@@ -89,8 +104,6 @@ export class PuzzlePieceCollection {
 
         piece.position.x = grid.position.x + gridX * this.gridSize - this.gridSize / 2;
         piece.position.y = grid.position.y + gridY * this.gridSize - this.gridSize / 2;
-        // piece.position.x = gridX * this.gridSize - this.gridSize / 2;
-        // piece.position.y = gridY * this.gridSize - this.gridSize / 2;
         piece.isLockedInPlace = true;
     }
 

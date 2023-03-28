@@ -6,7 +6,7 @@ function randomNumber(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-function getRandomPiecePosition({ width, height, gridSize }: ILevel) {
+export function getRandomPiecePosition({ width, height, gridSize }: ILevel) {
     const canvasWidth = Constants.canvas.width;
     const gridX = canvasWidth * 0.5 - width * gridSize * 0.5;
 
@@ -28,11 +28,14 @@ function getRandomPiecePosition({ width, height, gridSize }: ILevel) {
 export class PuzzlePiece {
     position: Vector2;
     pieceNumber: number;
+    level: ILevel;
     isLockedInPlace: boolean = false;
     sprite: Sprite;
+
     constructor(path: string, level: ILevel, pieceNumber: number) {
         const spritePath = `${path}/${pieceNumber}.jpg`;
         this.sprite = new Sprite(spritePath, 0.5);
+        this.level = level;
         this.position = getRandomPiecePosition(level);
         this.pieceNumber = pieceNumber;
     }

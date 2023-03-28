@@ -49,8 +49,8 @@ sharp(inputFile).toBuffer((err, buffer) => {
                     // Extract the square image
                     sharp(buffer)
                         .extract({
-                            left: col * size + remainderX / 2,
-                            top: row * size + remainderY / 2,
+                            left: Math.floor(col * size + remainderX / 2),
+                            top: Math.floor(row * size + remainderY / 2),
                             width: size,
                             height: size,
                         })

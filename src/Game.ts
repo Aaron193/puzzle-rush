@@ -13,6 +13,8 @@ export class Game {
 
     holdingPiece: PuzzlePiece | null;
     holdOffset: Vector2 = { x: 0, y: 0 };
+    timestamp: number = performance.now();
+    timeleft: number;
 
     private gameIsActive: boolean = true;
 
@@ -21,9 +23,10 @@ export class Game {
 
         this.mouse = new Mouse();
 
-        const level = Levels[LEVEL_TYPES.LANDSCAPE];
+        const level = Levels[LEVEL_TYPES.SWIRL];
         this.puzzleGrid = new PuzzleGrid(level);
         this.pieceCollection = new PuzzlePieceCollection(this, level);
+        this.timeleft = level.time;
 
         window.addEventListener('resize', () => this.resize());
 
@@ -32,7 +35,7 @@ export class Game {
         this.mouse.onmousemove = () => this.mousemove();
 
         this.loop();
-        // this.exitGame();
+        // this.enterHomepage();
     }
 
     switchLevel(level: ILevel) {
@@ -53,15 +56,28 @@ export class Game {
         this.gameIsActive = false;
     }
 
+    loseGame() {
+        this.enterHomepage();
+    }
+
     loop() {
         requestAnimationFrame(() => this.loop());
 
         if (!this.gameIsActive) return;
 
+        const now = performance.now();
+        const deltaTime = (now - this.timestamp) / 1000;
+        this.timestamp = now;
+        this.timeleft -= deltaTime;
+
+        if (this.timeleft <= 0) {
+            this.loseGame();
+        }
+
         const canvas = Constants.canvas;
         const ctx = Constants.ctx;
 
-        ctx.fillStyle = '#0C2D48';
+        ctx.fillStyle = Constants.Colors.background;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         const heldPiece = this.holdingPiece;
@@ -72,6 +88,24 @@ export class Game {
 
         this.puzzleGrid.draw(ctx);
         this.pieceCollection.pieces.forEach(piece => piece.draw(ctx));
+        this.drawTime(ctx);
+    }
+
+    drawTime(ctx: CanvasRenderingContext2D) {
+        const { width } = Constants.canvas;
+        const { timeleft } = this;
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '50px Arial';
+        ctx.textAlign = 'center';
+        ctx.lineWidth = 3;
+        const minutes = Math.floor(timeleft / 60);
+        let seconds = Math.floor(timeleft % 60).toString();
+        if (Number(seconds) < 10) {
+            seconds = '0' + seconds;
+        }
+        ctx.fillText(`${minutes}:${seconds}`, width / 2, 50);
+        ctx.strokeText(`${minutes}:${seconds}`, width / 2, 50);
     }
 
     resize() {

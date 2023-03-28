@@ -3,9 +3,9 @@ export class Constants {
     static ctx = Constants.canvas.getContext('2d') as CanvasRenderingContext2D;
 
     static Colors = {
-        background: '#0C2D48',
-        gridBoarder: '#061826',
-        cellBoarder: '#061826',
-        gridFill: '#2E8BC0',
+        background: '#141414',
+        gridBoarder: 'white',
+        cellBoarder: 'white',
+        gridFill: 'black',
     };
 }

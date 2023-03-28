@@ -36,6 +36,10 @@ export class PuzzleGrid {
         return this.grid[index];
     }
 
+    getTileAtIndex(index: number): PuzzlePiece {
+        return this.grid[index];
+    }
+
     draw(ctx: CanvasRenderingContext2D) {
         ctx.save();
         ctx.translate(this.position.x, this.position.y);
