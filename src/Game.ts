@@ -4,7 +4,10 @@ import { Mouse } from './Mouse';
 import { PuzzleGrid } from './PuzzleGrid';
 import { PuzzlePiece } from './PuzzlePiece';
 import { PuzzlePieceCollection } from './PuzzlePieceCollection';
+import { Sprite } from './Sprite';
 import { ILevel, Vector2 } from './types/Vector';
+
+const backgroundImage = new Sprite('images/background.png', 1);
 
 export class Game {
     mouse: Mouse;
@@ -42,6 +45,7 @@ export class Game {
         this.mouse.onmousemove = () => this.mousemove();
         
         this.loop();
+        this.enterHomepage();
     }
     switchLevel(level: ILevel) {
         this.puzzleGrid = new PuzzleGrid(level);
@@ -86,6 +90,14 @@ export class Game {
 
         ctx.fillStyle = Constants.Colors.background;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        if (backgroundImage.isLoaded) {
+            ctx.save();
+            ctx.drawImage(backgroundImage.image, 0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = 0.8;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
+        }
 
         const heldPiece = this.holdingPiece;
         if (heldPiece) {
