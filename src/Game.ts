@@ -45,7 +45,6 @@ export class Game {
         this.mouse.onmousemove = () => this.mousemove();
         
         this.loop();
-        this.enterHomepage();
     }
     switchLevel(level: ILevel) {
         this.puzzleGrid = new PuzzleGrid(level);
