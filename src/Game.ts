@@ -21,26 +21,31 @@ export class Game {
 
     private gameIsActive: boolean = true;
 
+    totalTime = 0;
+
+    public levelArray = [];
+    level
     constructor() {
+        this.enterHomepage();
+    }
+    startGame(){
+        this.level = this.levelArray[0];
         this.resize();
-
+        
         this.mouse = new Mouse();
-
-        const level = Levels[LEVEL_TYPES.SWIRL];
-        this.puzzleGrid = new PuzzleGrid(level);
-        this.pieceCollection = new PuzzlePieceCollection(this, level);
-        this.timeleft = level.time;
-
+        
+        this.puzzleGrid = new PuzzleGrid(this.level);
+        this.pieceCollection = new PuzzlePieceCollection(this, this.level);
+        this.timeleft = this.level.time;
+        
         window.addEventListener('resize', () => this.resize());
-
+        
         this.mouse.onmousedown = () => this.mousedown();
         this.mouse.onmouseup = () => this.mouseup();
         this.mouse.onmousemove = () => this.mousemove();
-
+        
         this.loop();
-        this.enterHomepage();
     }
-
     switchLevel(level: ILevel) {
         this.puzzleGrid = new PuzzleGrid(level);
         this.pieceCollection = new PuzzlePieceCollection(this, level);
@@ -54,6 +59,7 @@ export class Game {
     }
 
     enterHomepage() {
+        this.totalTime = 0;
         const startPage = document.querySelector('.start-page') as HTMLDivElement;
         startPage.style.display = 'flex';
         this.gameIsActive = false;
@@ -72,6 +78,7 @@ export class Game {
         const deltaTime = (now - this.timestamp) / 1000;
         this.timestamp = now;
         this.timeleft -= deltaTime;
+        this.totalTime += deltaTime;
 
         if (this.timeleft <= 0) {
             this.loseGame();
@@ -100,6 +107,7 @@ export class Game {
         this.puzzleGrid.draw(ctx);
         this.pieceCollection.pieces.forEach(piece => piece.draw(ctx));
         this.drawTime(ctx);
+        
     }
 
     drawTime(ctx: CanvasRenderingContext2D) {
