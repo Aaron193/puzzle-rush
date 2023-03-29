@@ -1,5 +1,4 @@
 import { Constants } from './Constants';
-import { Levels, LEVEL_TYPES } from './Levels';
 import { Mouse } from './Mouse';
 import { PuzzleGrid } from './PuzzleGrid';
 import { PuzzlePiece } from './PuzzlePiece';
@@ -23,29 +22,36 @@ export class Game {
 
     totalTime = 0;
 
-    public levelArray = [];
-    level
+    levelArray: ILevel[] = [];
+    level: ILevel;
     constructor() {
         this.enterHomepage();
-    }
-    startGame(){
-        this.level = this.levelArray[0];
         this.resize();
-        
+
         this.mouse = new Mouse();
-        
+
+        window.addEventListener('resize', () => this.resize());
+        document.onkeydown = e => {
+            if (e.key === 'Escape') {
+                this.enterHomepage();
+            }
+        };
+
+        this.mouse.onmousedown = () => this.mousedown();
+        this.mouse.onmouseup = () => this.mouseup();
+        // this.mouse.onmousemove = () => this.mousemove();
+
+        this.loop();
+    }
+
+    startGame() {
+        this.level = this.levelArray[0];
         this.puzzleGrid = new PuzzleGrid(this.level);
         this.pieceCollection = new PuzzlePieceCollection(this, this.level);
         this.timeleft = this.level.time;
-        
-        window.addEventListener('resize', () => this.resize());
-        
-        this.mouse.onmousedown = () => this.mousedown();
-        this.mouse.onmouseup = () => this.mouseup();
-        this.mouse.onmousemove = () => this.mousemove();
-        
-        this.loop();
+        this.gameIsActive = true;
     }
+
     switchLevel(level: ILevel) {
         this.puzzleGrid = new PuzzleGrid(level);
         this.pieceCollection = new PuzzlePieceCollection(this, level);
@@ -65,8 +71,22 @@ export class Game {
         this.gameIsActive = false;
     }
 
+    onPuzzleSolved() {
+        this.levelArray.shift();
+        if (this.levelArray.length > 0) {
+            this.startGame();
+        } else {
+            const minutes = Math.floor(this.totalTime / 60);
+            const seconds = Math.floor(this.totalTime % 60);
+            alert(`Congratulations! You have won the game. Your time was ${minutes} minutes and ${seconds} seconds.`);
+            this.enterHomepage();
+        }
+    }
+
     loseGame() {
+        alert("You've ran out of time! Try again!");
         this.enterHomepage();
+        this.totalTime = 0;
     }
 
     loop() {
@@ -107,19 +127,17 @@ export class Game {
         this.puzzleGrid.draw(ctx);
         this.pieceCollection.pieces.forEach(piece => piece.draw(ctx));
         this.drawTime(ctx);
-        
     }
 
     drawTime(ctx: CanvasRenderingContext2D) {
         const { width } = Constants.canvas;
-        const { timeleft } = this;
 
         ctx.fillStyle = '#fff';
         ctx.font = '50px Arial';
         ctx.textAlign = 'center';
         ctx.lineWidth = 3;
-        const minutes = Math.floor(timeleft / 60);
-        let seconds = Math.floor(timeleft % 60).toString();
+        const minutes = Math.floor(this.timeleft / 60);
+        let seconds = Math.floor(this.timeleft % 60).toString();
         if (Number(seconds) < 10) {
             seconds = '0' + seconds;
         }
@@ -134,6 +152,8 @@ export class Game {
     }
 
     mousedown() {
+        if (!this.gameIsActive) return;
+
         const { x, y } = this.mouse;
         const pieces = this.pieceCollection.pieces;
 
@@ -173,5 +193,5 @@ export class Game {
         }
     }
 
-    mousemove() {}
+    // mousemove() {}
 }

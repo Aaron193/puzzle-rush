@@ -43,16 +43,6 @@ export class PuzzlePieceCollection {
         // the grid slot must be an unoccupied slot
         if (gridPiece != undefined) return;
 
-        // because we start at 1.jpg
-        // const pieceNum = piece.pieceNumber - 1;
-        // const p = grid.getTileAtIndex(pieceNum);
-        // console.log(p);
-        // const pieceX = (pieceNum % this.width) * this.gridSize;
-        // const pieceY = Math.floor(pieceNum / this.width) * this.gridSize;
-
-        // console.log(target);
-        // console.log(pieceX, pieceY);
-
         let solvedPiece = false;
 
         const north = grid.getTile(target.x, target.y - this.gridSize);
@@ -88,7 +78,7 @@ export class PuzzlePieceCollection {
             const isPuzzleSolved = this.pieces.every(piece => piece.isLockedInPlace);
 
             if (isPuzzleSolved) {
-                console.log('puzzle was solved');
+                this.game.onPuzzleSolved();
             }
         } else {
             const level = piece.level;
