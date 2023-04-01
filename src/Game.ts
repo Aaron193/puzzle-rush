@@ -74,7 +74,10 @@ export class Game {
     onPuzzleSolved() {
         this.levelArray.shift();
         if (this.levelArray.length > 0) {
-            this.startGame();
+            this.gameIsActive = false;
+            setTimeout(() => {
+                this.startGame();
+            }, 5000);
         } else {
             const minutes = Math.floor(this.totalTime / 60);
             const seconds = Math.floor(this.totalTime % 60);

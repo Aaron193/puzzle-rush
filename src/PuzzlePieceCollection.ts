@@ -78,7 +78,10 @@ export class PuzzlePieceCollection {
             const isPuzzleSolved = this.pieces.every(piece => piece.isLockedInPlace);
 
             if (isPuzzleSolved) {
-                this.game.onPuzzleSolved();
+                // wait for the one frame so this place can be rendered in place before freezing over it
+                requestAnimationFrame(() => {
+                    this.game.onPuzzleSolved();
+                });
             }
         } else {
             const level = piece.level;
